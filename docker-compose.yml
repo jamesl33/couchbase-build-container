@@ -4,25 +4,11 @@ services:
     container_name: couchbase-build
     entrypoint: tail -f /dev/null
     environment:
-      SSH_AUTH_SOCK: /ssh-agent
+      SSH_AUTH_SOCK: $SSH_AUTH_SOCK
     image: couchbasebuild/server-ubuntu18-build
-    ports:
-      - 8091:8091
-      - 8092:8092
-      - 8093:8093
-      - 8094:8094
-      - 8095:8095
-      - 8096:8096
-      - 11207:11207
-      - 11210:11210
-      - 11211:11211
-      - 18091:18091
-      - 18092:18092
-      - 18093:18093
-      - 18094:18094
-      - 18095:18095
-      - 18096:18096
+    network_mode: "host"
     volumes:
-      - $HOME/.cbdepscache:/home/couchbase/.cbdepscache
-      - $HOME:/mnt
-      - $SSH_AUTH_SOCK:/ssh-agent
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+      - /home/couchbase:/home/couchbase
+      - /home/james/Projects/couchbase-build:/home/couchbase/Projects/couchbase-build
+      - /home/james/Projects/dotfiles:/home/couchbase/Projects/dotfiles
