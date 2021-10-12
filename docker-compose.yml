@@ -11,5 +11,4 @@ services:
     volumes:
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
       - /home/couchbase:/home/couchbase
-      - /home/james/Projects/couchbase-build:/home/couchbase/Projects/couchbase-build
-      - /home/james/Projects/dotfiles:/home/couchbase/Projects/dotfiles
+      - $HOME/Projects/couchbase-build:/home/couchbase/Projects/couchbase-build
