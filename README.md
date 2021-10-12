@@ -1,7 +1,7 @@
 couchbase-build-container
 -------------------------
-couchbase-build-container is a simple 'docker-compose.yml' which aims to
-improve the Couchbase development workflow on unsupported platforms.
+couchbase-build-container is a simple 'docker-compose.yml' which aims to improve the Couchbase development workflow on
+unsupported platforms.
 
 Usage
 -----
@@ -11,23 +11,33 @@ Dependencies:
 
 First of all ensure that the container is running.
 ```sh
-docker-compose up -d # run the build container
-docker exec it -u couchbase couchbase-build /bin/bash # access the shell for the container
+# When running with docker-compose V1
+docker-compose up -d
+
+# When running with docker-compose V2
+docker compose up -d
+
+# Access the shell for the container
+docker exec it -u couchbase couchbase-build /bin/bash
 ```
 
-Follow the build steps as written in the Couchbase [tlm](https://github.com/couchbase/tlm) repository.
+Follow the build steps as written in the Couchbase [tlm](https://github.com/couchbase/tlm) repository using
+`$HOME/Projects/couchbase-build` as the "source" directory.
 
 Run the newly compiled version of Couchbase CE/EE.
 ```sh
-./$COUCHBASE_BUILD_ROOT/install/bin/couchbase-server -- -kernel global_enable_tracing false -noinput
+# Change directory into the 'ns_server' directory
+cd $HOME/Projects/couchbase-build/ns_server
+
+# Run one or more modes using 'cluster_run'
+./cluster_run --nodes 1 --dont-rename
+
+# Connect the nodes into a cluster using 'cluster_connect'
+./cluster_connect -n 1 -s 1024 -T n0:kv
 ```
 
-Determine the IP address of the build container
-```sh
-docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' couchbase-build
-```
-
-Navigate to '$BUILD_CONTAINER_IP:8091' to access the web user interface for Couchbase Server.
+Connect to the cluster using the WebUI by visiting `localhost:9000` in your chosen web browser, see the `cluster_run`
+and `cluster_connect` scripts for more information about how the ports are configured for multiple nodes.
 
 License
 -------
